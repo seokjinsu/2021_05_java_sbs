@@ -3,26 +3,47 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("== 프로그램 시작 ==");
 		
+		System.out.println("== 프로그램 시작 ==");
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.printf("명령어 )");
-		String command = sc.nextLine();   // 한줄 통채로 받는다.
+		int lastArticle_id = 0;
 		
-//		command = sc.next();            // abc abc 하면 abc만 입력받음 공백뒤 절삭
-//		command = sc.next(); 2번 받기 위함.
-		System.out.printf("입력된 명령어 : %s\n", command);
-		
-		System.out.printf("명령어 )");
-		int num = sc.nextInt();
-		System.out.printf("입력된 명령어 : %s\n", num);
+		while(true) {
+			System.out.println("명령어 )");
+			String command = sc.nextLine().trim();
+			
+			if (command.length() == 0) {
+				System.out.println(" 명령어를 입력되지 않았습니다.\n 입력해주세요");
+				continue;
+			}
+			
+			if (command.equals("articles write")) {
+				int id = lastArticle_id+1;
+				lastArticle_id = id;
+				
+				System.out.println("제목 : ");
+				String title = sc.nextLine();
+				System.out.println("내용 : ");
+				String body = sc.nextLine();
+				
+				System.out.printf("%d번 글이 생성 되었습니다.\n", id);
+				
+			}else if(command.equals("system exit")) {
+				break;
+			}else if(command.equals("Articles list")){
+				System.out.println("게시물이 없습니다.");
+			}else {
+				System.out.printf("%s는 존재하지 않는 명령어입니다.",command);
+			}
+				
+				
+		}
 		
 		sc.close();
+	
 		
-		
-		
-		
-		System.out.println("== 프로그램 끝 ==");
+		System.out.println("=== 프로그램 끝 ===");
+
 	}
 }
