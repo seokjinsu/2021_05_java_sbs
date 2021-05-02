@@ -1,5 +1,7 @@
 package com.sbs.java.crud;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +17,7 @@ public class Main {
 		
 		
 		while(true) {
-			System.out.println("명령어 )");
+			System.out.printf("명령어 )");
 			String command = sc.nextLine().trim();
 			
 			if (command.length() == 0) {
@@ -28,9 +30,9 @@ public class Main {
 				int id = lastArticle_id+1;
 				lastArticle_id = id;
 				
-				System.out.println("제목 : ");
+				System.out.printf("제목 : ");
 				String title = sc.nextLine();
-				System.out.println("내용 : ");
+				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 				
 				Article article = new Article(id,title,body);
@@ -52,6 +54,36 @@ public class Main {
 					
 					System.out.printf("%d   / %s \n",article.id, article.title);
 				}
+			}else if(command.startsWith("article detail")){
+				String[] commandBits = command.split(" ");
+				int id = Integer.parseInt(commandBits[2]);
+				Article foundArticle = null;
+				
+				
+				for(int i = 0; i < articles.size();i++) {
+					Article article = articles.get(i);
+					
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+				
+				if(foundArticle == null) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+				}
+
+				SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+				Date time = new Date();
+				String time1 = format1.format(time);
+				
+				
+				System.out.printf("\n번호 : %s\n",id);
+				System.out.printf("날짜 : %s\n",time1);
+				System.out.printf("제목 : %s\n",foundArticle.title);
+				System.out.printf("내용 : %s\n",foundArticle.body);
+				
+				
 			}else {
 				System.out.printf("%s는 존재하지 않는 명령어입니다.",command);
 			}
