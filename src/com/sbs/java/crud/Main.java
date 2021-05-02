@@ -2,6 +2,7 @@ package com.sbs.java.crud;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -71,6 +72,7 @@ public class Main {
 				
 				if(foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+					continue;
 				}
 
 				SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
@@ -81,8 +83,32 @@ public class Main {
 				System.out.printf("\n번호 : %s\n",id);
 				System.out.printf("날짜 : %s\n",time1);
 				System.out.printf("제목 : %s\n",foundArticle.title);
-				System.out.printf("내용 : %s\n",foundArticle.body);
+				System.out.printf("내용 : %s\n\n",foundArticle.body);
 				
+				
+			}else if(command.startsWith("article delete")){
+				String[] commandBits1 = command.split(" ");
+				int id = Integer.parseInt(commandBits1[2]);
+				
+				int found_Index = -1;
+				
+				for(int i = 0; i < articles.size();i++) {
+					Article article = articles.get(i);
+					
+					if (article.id == id) {
+						found_Index = i;
+						break;
+					}
+				}
+				
+				if(found_Index == -1) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+					continue;
+				}
+				
+				
+				articles.remove(found_Index);
+				System.out.printf("%d번 게시물이 삭제 되었습니다.\n\n", id);
 				
 			}else {
 				System.out.printf("%s는 존재하지 않는 명령어입니다.",command);
