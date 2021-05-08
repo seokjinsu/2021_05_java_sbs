@@ -4,15 +4,23 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+	
+	private static List<Article> articles;
+	
+	static {
+		articles = new ArrayList<>();
+	}
+	
 	public static void main(String[] args) {
 		
 		System.out.println("== 프로그램 시작 ==");
 		Scanner sc = new Scanner(System.in);
 		
-		int lastArticle_id = 0;
+//		int lastArticle_id = 3;
 		
-		List<Article> articles = new ArrayList<>();
+//		List<Article> articles = new ArrayList<>();
 		
+		MakeTestData();
 		
 		while(true) {
 			System.out.printf("명령어 )");
@@ -25,8 +33,8 @@ public class Main {
 			
 			if (command.equals("article write")) {
 
-				int id = lastArticle_id+1;
-				lastArticle_id = id;
+				int id = articles.size() + 1;
+//				lastArticle_id = id;
 				
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
@@ -51,12 +59,12 @@ public class Main {
 					System.out.println("게시물이 없습니다.");
 					continue;
 				}
-				System.out.println("번호 / 제목");
+				System.out.println("번호 / 제목  /  조회수");
 				
 				for(int i= articles.size() -1; i>=0; i--) {
 					Article article = articles.get(i);
 					
-					System.out.printf("%d   / %s \n",article.id, article.title);
+					System.out.printf("%d   / %s   /  %d \n",article.id, article.title, article.article_counterValue);
 				}
 			}else if(command.startsWith("article detail")){
 				String[] commandBits = command.split(" ");
@@ -84,7 +92,6 @@ public class Main {
 				System.out.printf("날짜 : %s\n",foundArticle.regdate);
 				System.out.printf("제목 : %s\n",foundArticle.title);
 				System.out.printf("내용 : %s\n\n",foundArticle.body);
-				
 				
 				
 			}else if(command.startsWith("article delete")){
@@ -161,7 +168,18 @@ public class Main {
 		System.out.println("=== 프로그램 끝 ===");
 
 	}
+	private static void MakeTestData() {
+		
+		articles.add(new Article(1,"제목1","내용1",Util.getNowDateStr(),16));
+		articles.add(new Article(2,"제목2","내용2",Util.getNowDateStr(),31));
+		articles.add(new Article(3,"제목3","내용3",Util.getNowDateStr(),51));
+		
+		
+		System.out.println("기본 테스트 게시글이 생성되었습니다.");
+	}
 }
+
+
 
 class Article{
 	String title;
