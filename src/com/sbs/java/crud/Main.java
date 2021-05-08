@@ -1,8 +1,5 @@
 package com.sbs.java.crud;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +23,7 @@ public class Main {
 				continue;
 			}
 			
-			if (command.equals("articles write")) {
+			if (command.equals("article write")) {
 
 				int id = lastArticle_id+1;
 				lastArticle_id = id;
@@ -36,7 +33,11 @@ public class Main {
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 				
-				Article article = new Article(id,title,body);
+				//data 부분
+				String time1;
+				time1 = Util.getNowDateStr();
+				
+				Article article = new Article(id,title,body,time1);
 				articles.add(article);
 				
 				System.out.printf("%d번 글이 생성 되었습니다.\n", id);
@@ -73,15 +74,10 @@ public class Main {
 				if(foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					continue;
-				}
-
-				SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
-				Date time = new Date();
-				String time1 = format1.format(time);
-				
+				}				
 				
 				System.out.printf("\n번호 : %s\n",id);
-				System.out.printf("날짜 : %s\n",time1);
+				System.out.printf("날짜 : %s\n",foundArticle.regdate);
 				System.out.printf("제목 : %s\n",foundArticle.title);
 				System.out.printf("내용 : %s\n\n",foundArticle.body);
 				
@@ -129,11 +125,13 @@ class Article{
 	String title;
 	String body;
 	int id;
+	String regdate;
 	
-	public Article(int id, String title, String body) {
+	public Article(int id, String title, String body, String date) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
+		this.regdate = date;
 		
 	}
 
