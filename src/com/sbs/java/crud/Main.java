@@ -36,8 +36,10 @@ public class Main {
 				//data 부분
 				String time1;
 				time1 = Util.getNowDateStr();
+				//카운터
+				int counter = 0;
 				
-				Article article = new Article(id,title,body,time1);
+				Article article = new Article(id,title,body,time1,counter);
 				articles.add(article);
 				
 				System.out.printf("%d번 글이 생성 되었습니다.\n", id);
@@ -76,10 +78,13 @@ public class Main {
 					continue;
 				}				
 				
+				foundArticle.article_counterValue += 1;
 				System.out.printf("\n번호 : %s\n",id);
+				System.out.printf("조회수 : %s\n",foundArticle.article_counterValue);
 				System.out.printf("날짜 : %s\n",foundArticle.regdate);
 				System.out.printf("제목 : %s\n",foundArticle.title);
 				System.out.printf("내용 : %s\n\n",foundArticle.body);
+				
 				
 				
 			}else if(command.startsWith("article delete")){
@@ -106,6 +111,43 @@ public class Main {
 				articles.remove(found_Index);
 				System.out.printf("%d번 게시물이 삭제 되었습니다.\n\n", id);
 				
+			}else if(command.startsWith("article modify")){
+				String[] commandBits = command.split(" ");
+				int id = Integer.parseInt(commandBits[2]);
+				Article foundArticle = null;
+				
+				
+				for(int i = 0; i < articles.size();i++) {
+					Article article = articles.get(i);
+					
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+				
+				if(foundArticle == null) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+					continue;
+				}			
+				
+				
+				System.out.printf("새 제목 : ");
+				String title = sc.nextLine();
+				System.out.printf("새 내용 : ");
+				String body = sc.nextLine();
+				
+				//data 부분
+				String time1;
+				time1 = Util.getNowDateStr();
+				
+				
+				foundArticle.title = title;
+				foundArticle.body = body;
+				foundArticle.regdate = time1;
+				
+				System.out.printf("%d번 게시물이 변경 되었습니다.\n\n", id);
+				
 			}else {
 				System.out.printf("%s는 존재하지 않는 명령어입니다.",command);
 			}
@@ -126,12 +168,14 @@ class Article{
 	String body;
 	int id;
 	String regdate;
+	int article_counterValue;
 	
-	public Article(int id, String title, String body, String date) {
+	public Article(int id, String title, String body, String date,int counter) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
 		this.regdate = date;
+		this.article_counterValue = counter;
 		
 	}
 
