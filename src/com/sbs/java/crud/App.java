@@ -56,18 +56,43 @@ public class App {
 				
 			}else if(command.equals("system exit")) {
 				break;
-			}else if(command.equals("articles list")){
+			}else if(command.startsWith("articles list")){
+				
+				
+				String serchkeyword = command.substring("articles list".length()).trim();
+				
+				List<Article> forListArticles = articles;
+				
 				if (articles.size() == 0) {
 					System.out.println("게시물이 없습니다.");
 					continue;
 				}
-				System.out.println("번호 / 제목  /  조회수");
 				
-				for(int i= articles.size() -1; i>=0; i--) {
-					Article article = articles.get(i);
+				if (serchkeyword.length() > 0) {
+					forListArticles = new ArrayList<>();
 					
-					System.out.printf("%d   / %s   /  %d \n",article.id, article.title, article.article_counterValue);
+					for (Article article : articles) {
+						if(article.title.contains(serchkeyword)) {
+							forListArticles.add(article);
+						}
+					}
+					
+					if (forListArticles.size() == 0) {
+						System.out.println("검색결과가 존재하지 않습니다.");
+						continue;
+					}
+						
 				}
+				
+				System.out.println("번호 / 제목  /  조회수");
+
+				for (int i = forListArticles.size() - 1; i >= 0; i--) {
+					Article article = forListArticles.get(i);
+
+					System.out.printf("%d   / %s   /  %d \n", article.id, article.title,
+							article.article_counterValue);
+				}
+				
 			}else if(command.startsWith("article detail")){
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
@@ -88,10 +113,10 @@ public class App {
 				if(foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					continue;
-				}				
+				}
 				
 				foundArticle.article_counterValue += 1;
-				System.out.printf("\n번호 : %s\n",id);
+				System.out.printf("\n번호 : %s\n",foundArticle.id);
 				System.out.printf("조회수 : %s\n",foundArticle.article_counterValue);
 				System.out.printf("날짜 : %s\n",foundArticle.regdate);
 				System.out.printf("제목 : %s\n",foundArticle.title);
