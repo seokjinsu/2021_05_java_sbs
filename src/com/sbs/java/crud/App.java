@@ -61,7 +61,6 @@ public class App {
 				break;
 			}else if(command.startsWith("articles list")){
 				
-				
 				String serchkeyword = command.substring("articles list".length()).trim();
 				
 				List<Article> forListArticles = articles;
@@ -196,9 +195,22 @@ public class App {
 				System.out.printf("사용자 이름 : ");
 				String name = sc.nextLine();
 				
-				System.out.printf("로그인 비밀번호 : ");
-				String login_PW = sc.nextLine();
-				
+				String login_PW;
+				while(true) {
+					System.out.printf("로그인 비밀번호 : ");
+					login_PW = sc.nextLine();
+					
+					System.out.printf("비밀번호 재입력 : ");
+					String login_PW_Retry = sc.nextLine();
+					
+					if (login_PW.equals(login_PW_Retry) == true) {
+						break;
+					}else {
+						System.out.println("비밀번호를 재 입력하세요");
+						continue;
+					}
+				}
+
 				
 				//data 부분
 				String time1;
