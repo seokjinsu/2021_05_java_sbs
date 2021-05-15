@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.sbs.java.crud.dto.Article;
+import com.sbs.java.crud.dto.Member;
 import com.sbs.java.crud.util.Util;
 
 public class App {
 	private static List<Article> articles;
+	private static List<Member> members;
 	
 	static {
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 	
 	static void start() {
@@ -81,7 +84,6 @@ public class App {
 						System.out.println("검색결과가 존재하지 않습니다.");
 						continue;
 					}
-						
 				}
 				
 				System.out.println("번호 / 제목  /  조회수");
@@ -89,8 +91,7 @@ public class App {
 				for (int i = forListArticles.size() - 1; i >= 0; i--) {
 					Article article = forListArticles.get(i);
 
-					System.out.printf("%d   / %s   /  %d \n", article.id, article.title,
-							article.article_counterValue);
+					System.out.printf("%d   / %s   /  %d \n", article.id, article.title, article.article_counterValue);
 				}
 				
 			}else if(command.startsWith("article detail")){
@@ -118,7 +119,7 @@ public class App {
 				foundArticle.article_counterValue += 1;
 				System.out.printf("\n번호 : %s\n",foundArticle.id);
 				System.out.printf("조회수 : %s\n",foundArticle.article_counterValue);
-				System.out.printf("날짜 : %s\n",foundArticle.regdate);
+				System.out.printf("날짜 : %s\n",foundArticle.regDate);
 				System.out.printf("제목 : %s\n",foundArticle.title);
 				System.out.printf("내용 : %s\n\n",foundArticle.body);
 				
@@ -172,9 +173,42 @@ public class App {
 				
 				foundArticle.title = title;
 				foundArticle.body = body;
-				foundArticle.regdate = time1;
+				foundArticle.regDate = time1;
 				
 				System.out.printf("%d번 게시물이 변경 되었습니다.\n\n", id);
+				
+			}else if(command.equals("member join")){
+				int id = members.size() + 1;
+
+				String login_ID = null;
+				
+				while (true) {
+					System.out.printf("로그인 아이디 : ");
+					login_ID = sc.nextLine();
+					
+					if(isJoinableLoginId(login_ID) == false) {
+						System.out.printf("%s는(은) 이미 사용중인 아이디입니다.\n", login_ID);
+						continue;
+					}
+					break;
+				}
+				
+				System.out.printf("사용자 이름 : ");
+				String name = sc.nextLine();
+				
+				System.out.printf("로그인 비밀번호 : ");
+				String login_PW = sc.nextLine();
+				
+				
+				//data 부분
+				String time1;
+				time1 = Util.getNowDateStr();
+				
+				
+				Member member = new Member(id,time1,name,login_ID,login_PW);
+				members.add(member);
+				
+				System.out.printf("%d번 회원이 생성 되었습니다.\n", id);
 				
 			}else {
 				System.out.printf("%s는 존재하지 않는 명령어입니다.\n",command);
@@ -188,6 +222,28 @@ public class App {
 		
 		System.out.println("=== 프로그램 끝 ===");
 
+	}
+	
+	private static boolean isJoinableLoginId(String login_ID) {
+		int index = getMemberIndexByloginID(login_ID);
+		
+		if (index == -1) {
+			return true;
+		}
+		return false;
+	}
+
+	private static int getMemberIndexByloginID(String login_ID) {
+		int i = 0;
+		
+		for(Member member: members) {
+			if(member.login_ID.equals(login_ID)) {
+				return i;
+			}
+			i ++;
+			
+		}
+		return -1;
 	}
 	
 	private static int getArticleIndexById(int id) {
@@ -247,3 +303,6 @@ public class App {
 	}
 		
 }
+
+
+
