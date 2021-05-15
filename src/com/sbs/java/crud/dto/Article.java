@@ -13,6 +13,9 @@ public class Article extends Dto{
 		this.article_counterValue = counter;
 		
 	}
-
+	
+	public void increaseCounter() {
+		article_counterValue++;
+	}
 	
 }
