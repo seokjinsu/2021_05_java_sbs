@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.sbs.java.crud.dto.Article;
 import com.sbs.java.crud.util.Util;
 
+
 public class ArticleController extends Controller{
 	private Scanner sc;
 	private List<Article> articles;
@@ -35,6 +36,10 @@ public class ArticleController extends Controller{
 			showDetail();
 			break;
 		case "write":
+			if(islogined() == false) {
+				System.out.println("글쓰기는 로그인을 해야합니다.");
+				return;
+			}
 			doWrite();
 			break;
 		case "modify":
@@ -51,6 +56,7 @@ public class ArticleController extends Controller{
 
 	
 	public void doWrite() {
+			
 		int id = articles.size() + 1;
 //		lastArticle_id = id;
 		
@@ -65,11 +71,12 @@ public class ArticleController extends Controller{
 		//카운터
 		int counter = 0;
 		
-		Article article = new Article(id,title,body,time1,counter);
+		Article article = new Article(id,title,body,time1,counter,loginedMember.id);
 		articles.add(article);
 		
 		System.out.printf("%d번 글이 생성 되었습니다.\n", id);
 	}
+	
 
 	public void showList() {
 		
@@ -97,12 +104,12 @@ public class ArticleController extends Controller{
 			}
 		}
 		
-		System.out.println("번호 / 제목  /  조회수");
+		System.out.println(" 번호 | 제목  | 작성자 | 조회수");
 
 		for (int i = forListArticles.size() - 1; i >= 0; i--) {
 			Article article = forListArticles.get(i);
 
-			System.out.printf("%d   / %s   /  %d \n", article.id, article.title, article.article_counterValue);
+			System.out.printf("%4d | %4s | %4s | %4d \n", article.id, article.title, article.memberId ,article.article_counterValue);
 		}
 		
 		
@@ -131,6 +138,7 @@ public class ArticleController extends Controller{
 		System.out.printf("\n번호 : %s\n",foundArticle.id);
 		System.out.printf("조회수 : %s\n",foundArticle.article_counterValue);
 		System.out.printf("날짜 : %s\n",foundArticle.regDate);
+		System.out.printf("작성자 : %s\n",foundArticle.memberId);
 		System.out.printf("제목 : %s\n",foundArticle.title);
 		System.out.printf("내용 : %s\n\n",foundArticle.body);
 
@@ -228,9 +236,9 @@ public class ArticleController extends Controller{
 	
 	public void MakeTestData() {
 		
-		articles.add(new Article(1,"제목1","내용1",Util.getNowDateStr(),16));
-		articles.add(new Article(2,"제목2","내용2",Util.getNowDateStr(),31));
-		articles.add(new Article(3,"제목3","내용3",Util.getNowDateStr(),51));
+		articles.add(new Article(1,"제목1","내용1",Util.getNowDateStr(),16,1));
+		articles.add(new Article(2,"제목2","내용2",Util.getNowDateStr(),31,2));
+		articles.add(new Article(3,"제목3","내용3",Util.getNowDateStr(),51,3));
 		
 		
 		System.out.println("기본 테스트 게시글이 생성되었습니다.");

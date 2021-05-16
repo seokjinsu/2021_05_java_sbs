@@ -16,6 +16,7 @@ public class App {
 		ArticleController articleController = new ArticleController(sc);
 		
 		articleController.MakeTestData();
+		memberController.MakeTestData();
 		
 		while(true) {
 			System.out.printf("¸í·É¾î )");

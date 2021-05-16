@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.sbs.java.crud.dto.Article;
 import com.sbs.java.crud.dto.Member;
 import com.sbs.java.crud.util.Util;
 
@@ -12,7 +13,7 @@ public class MemberController extends Controller{
 	private List<Member> members;
 	private String command;
 	private String actionMethodName;
-	private Member loginedMember;
+//	public Member loginedMember;
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
@@ -28,7 +29,12 @@ public class MemberController extends Controller{
 		case "join":
 			doJoin();
 			break;
-		
+		case "login":
+			doLogin();
+			break;
+		case "logout":
+			doLogout();
+			break;
 		default:
 			System.out.println("해당 명령어는 존재하지 않습니다. 확인후 입력해주세요.");
 			break;
@@ -36,6 +42,11 @@ public class MemberController extends Controller{
 	}
 	
 	public void doLogin() {
+		if (isLogined()) {
+			System.out.println("로그인이 되어있습니다. 로그아웃후에 다시 로그인해주세요");
+			return;
+		}
+		
 		System.out.printf("아이디를 입력하세요 : ");
 		String loginId = sc.nextLine();
 		System.out.printf("비밀번호를 입력하세요 : ");
@@ -54,6 +65,22 @@ public class MemberController extends Controller{
 		loginedMember = member;
 
 		System.out.printf("로그인 되었습니다. 환영합니다요!\n", loginedMember.name);
+	}
+	
+	public void doLogout() {
+		if (isLogined()) {
+			loginedMember = null; 
+			System.out.println("로그아웃이 되었습니다.");
+			return;
+		}
+		System.out.println("로그인이 되어야 로그아웃이 가능합니다.");
+	}
+	
+	public boolean isLogined() {
+		if (loginedMember != null) {
+			return true;
+		}
+		return false;
 	}
 	
 	private Member getMemberByLoginId(String loginId) {
@@ -139,5 +166,15 @@ public class MemberController extends Controller{
 			
 		}
 		return -1;
+	}
+
+	public void MakeTestData() {
+		members.add(new Member(1,Util.getNowDateStr(),"관리자","admin","admin"));
+		members.add(new Member(2,Util.getNowDateStr(),"사용자1","user1","user1"));
+		members.add(new Member(3,Util.getNowDateStr(),"사용자2","user2","user2"));
+		
+
+		System.out.println("기본 테스트 게시글이 생성되었습니다.");
+		
 	}
 }
