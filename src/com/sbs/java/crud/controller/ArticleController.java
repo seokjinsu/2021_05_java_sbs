@@ -104,6 +104,7 @@ public class ArticleController extends Controller{
 			}
 		}
 		
+		
 		System.out.println(" 번호 | 제목  | 작성자 | 조회수");
 
 		for (int i = forListArticles.size() - 1; i >= 0; i--) {
@@ -152,14 +153,25 @@ public class ArticleController extends Controller{
 			return;
 		}
 
-		int found_Index = getArticleIndexById(id);
+//		int found_Index = getArticleIndexById(id);
+//		
+//		if(found_Index == -1) {
+//			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+//			return;
+//		}
+		Article foundArticle = getArticlesById(id);
 		
-		if(found_Index == -1) {
+		if(foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
 		
-		articles.remove(found_Index);
+		if (foundArticle.memberId != loginedMember.id) {
+			System.out.println("니는 권한이 없어요!!");
+			return;
+		}	
+		
+		articles.remove(foundArticle);
 		System.out.printf("%d번 게시물이 삭제 되었습니다.\n\n", id);
 		
 	}
@@ -177,7 +189,12 @@ public class ArticleController extends Controller{
 		if(foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
-		}			
+		}
+		
+		if (foundArticle.memberId != loginedMember.id) {
+			System.out.println("니는 권한이 없어요!!");
+			return;
+		}	
 		
 		
 		System.out.printf("새 제목 : ");
